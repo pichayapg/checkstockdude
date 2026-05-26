@@ -669,6 +669,80 @@ function renderHistory(){
 }
 
 </script>
+async function saveHistoryNew(){
 
+  const checker =
+  localStorage.getItem("DUDE_checker_name");
+
+  const allInputs =
+  document.querySelectorAll(".items input");
+
+  const items = [];
+
+  allInputs.forEach(input => {
+
+    const item =
+    input.closest(".item");
+
+    const product =
+    item.querySelector(".item-name").innerText;
+
+    const amount =
+    input.value || 0;
+
+    const category =
+    item.closest(".items")
+    .previousElementSibling.innerText
+    .replace("›","")
+    .trim();
+
+    items.push({
+
+      product: product,
+      amount: amount,
+      category: category
+
+    });
+
+  });
+
+  const data = {
+
+    checker: checker,
+
+    time:
+    new Date().toLocaleTimeString("th-TH"),
+
+    date:
+    new Date().toLocaleDateString("th-TH"),
+
+    items: items
+
+  };
+
+  const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxCIF2RQO5B8Rea2qbIyiE6oN9mFIVxnu0Nl23EjfzzCd0aZLJ8zS1EPhZ5zLkukh4N4g/exec";
+
+  try{
+
+    await fetch(SCRIPT_URL, {
+
+      method: "POST",
+
+      body: JSON.stringify(data)
+
+    });
+
+    alert("บันทึกข้อมูลเรียบร้อย");
+
+  }catch(error){
+
+    alert("เกิดข้อผิดพลาด");
+
+    console.log(error);
+
+  }
+
+}
 </body>
 </html>
